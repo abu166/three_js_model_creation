@@ -11,14 +11,18 @@ import {
   DoorClosed,
   DoorOpen,
   Ruler,
+  Sun,
+  Moon,
+  Camera,
 } from 'lucide-react';
-import type { CabinetColor, CabinetDimensions, CabinetConfig } from '../../types';
+import type { CabinetColor, CabinetDimensions, CabinetConfig, AmbientTheme } from '../../types';
 import { COLOR_OPTIONS, DIMENSION_LIMITS } from '../../types';
 
 interface ControlPanelProps {
   config: CabinetConfig;
   onChangeDimension: (key: keyof CabinetDimensions, value: number) => void;
   onChangeColor: (color: CabinetColor) => void;
+  onChangeAmbientTheme: (theme: AmbientTheme) => void;
   onToggleDoor: () => void;
   onToggleDimensions: () => void;
   onToggleWireframe: () => void;
@@ -37,6 +41,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
   config,
   onChangeDimension,
   onChangeColor,
+  onChangeAmbientTheme,
   onToggleDoor,
   onToggleDimensions,
   onToggleWireframe,
@@ -73,6 +78,40 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
           R3F Live
         </span>
+      </div>
+
+      {/* ================= AMBIENT THEME SELECTOR ================= */}
+      <div>
+        <label className="text-xs font-semibold uppercase tracking-wider text-slate-400 flex items-center gap-1.5 mb-2.5">
+          <Sun className="w-3.5 h-3.5 text-amber-400" />
+          Жарықтандыру режимі (Ambient Theme)
+        </label>
+        <div className="grid grid-cols-3 gap-2">
+          {[
+            { id: 'day' as AmbientTheme, label: 'Күндізгі', sub: 'Natural Sun', icon: Sun, color: 'text-amber-400' },
+            { id: 'night' as AmbientTheme, label: 'Түнгі', sub: 'Cozy Lamp', icon: Moon, color: 'text-indigo-400' },
+            { id: 'studio' as AmbientTheme, label: 'Студия', sub: 'Photo Light', icon: Camera, color: 'text-sky-400' },
+          ].map((themeOpt) => {
+            const isActive = config.ambientTheme === themeOpt.id;
+            const Icon = themeOpt.icon;
+            return (
+              <button
+                key={themeOpt.id}
+                type="button"
+                onClick={() => onChangeAmbientTheme(themeOpt.id)}
+                className={`flex flex-col items-center justify-center py-2 px-1.5 rounded-xl text-xs font-medium transition-all duration-200 border text-center active:scale-95 ${
+                  isActive
+                    ? 'bg-indigo-600/30 border-indigo-500 text-white shadow-md shadow-indigo-500/20'
+                    : 'bg-slate-800/60 border-slate-700/60 text-slate-300 hover:bg-slate-800 hover:border-slate-600'
+                }`}
+              >
+                <Icon className={`w-4 h-4 mb-1 ${themeOpt.color}`} />
+                <span className="text-xs font-medium text-white">{themeOpt.label}</span>
+                <span className="text-[10px] text-slate-400 mt-0.5">{themeOpt.sub}</span>
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       {/* ================= PRESET QUICK SELECT ================= */}

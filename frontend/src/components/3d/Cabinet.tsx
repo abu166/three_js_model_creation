@@ -26,7 +26,7 @@ const CabinetMaterial: React.FC<{ color: CabinetColor; wireframe?: boolean }> = 
 }) => {
   const [texture, setTexture] = useState<THREE.Texture | null>(cachedWalnutTexture);
 
-  // Pre-load walnut texture on initial mount
+  // Pre-load walnut texture on initial mount with optimal filtering & repeat
   useEffect(() => {
     if (!cachedWalnutTexture) {
       const loader = new THREE.TextureLoader();
@@ -35,8 +35,11 @@ const CabinetMaterial: React.FC<{ color: CabinetColor; wireframe?: boolean }> = 
         (loadedTex) => {
           loadedTex.wrapS = THREE.RepeatWrapping;
           loadedTex.wrapT = THREE.RepeatWrapping;
-          loadedTex.repeat.set(1.8, 1.8);
+          loadedTex.repeat.set(1.5, 1.5);
           loadedTex.colorSpace = THREE.SRGBColorSpace;
+          loadedTex.generateMipmaps = true;
+          loadedTex.minFilter = THREE.LinearMipmapLinearFilter;
+          loadedTex.magFilter = THREE.LinearFilter;
           loadedTex.needsUpdate = true;
           cachedWalnutTexture = loadedTex;
           setTexture(loadedTex);
@@ -57,7 +60,7 @@ const CabinetMaterial: React.FC<{ color: CabinetColor; wireframe?: boolean }> = 
       key={`${color}-${isWalnut && Boolean(texture)}`}
       color={isWalnut ? (texture ? '#ffffff' : '#5C4033') : colorDef.hex}
       map={isWalnut && texture ? texture : null}
-      roughness={isWalnut ? 0.45 : colorDef.roughness}
+      roughness={isWalnut ? 0.7 : colorDef.roughness}
       metalness={isWalnut ? 0.05 : colorDef.metalness}
       wireframe={wireframe}
     />

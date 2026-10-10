@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { Scene } from './3d/Scene';
 import { ControlPanel } from './ui/ControlPanel';
 import { Layout } from './ui/Layout';
-import type { CabinetColor, CabinetDimensions, CabinetConfig } from '../types';
+import type { CabinetColor, CabinetDimensions, CabinetConfig, AmbientTheme } from '../types';
 import { DIMENSION_LIMITS } from '../types';
 
 export const App: React.FC = () => {
@@ -14,6 +14,7 @@ export const App: React.FC = () => {
       depth: 450,
     },
     color: 'walnut', // Default to Walnut to immediately showcase rich texture mapping
+    ambientTheme: 'day', // Cinematic indoor natural daylight by default
     isDoorOpen: false,
     showDimensions: true,
     wireframe: false,
@@ -43,6 +44,11 @@ export const App: React.FC = () => {
   // Color selection handler
   const handleColorChange = useCallback((color: CabinetColor) => {
     setConfig((prev) => ({ ...prev, color }));
+  }, []);
+
+  // Ambient theme selection handler (day, night, studio)
+  const handleAmbientThemeChange = useCallback((ambientTheme: AmbientTheme) => {
+    setConfig((prev) => ({ ...prev, ambientTheme }));
   }, []);
 
   // Door animation toggle
@@ -90,6 +96,7 @@ export const App: React.FC = () => {
         <Scene
           dimensions={config.dimensions}
           color={config.color}
+          ambientTheme={config.ambientTheme}
           isDoorOpen={config.isDoorOpen}
           showDimensions={config.showDimensions}
           wireframe={config.wireframe}
@@ -103,6 +110,7 @@ export const App: React.FC = () => {
           config={config}
           onChangeDimension={handleDimensionChange}
           onChangeColor={handleColorChange}
+          onChangeAmbientTheme={handleAmbientThemeChange}
           onToggleDoor={handleToggleDoor}
           onToggleDimensions={handleToggleDimensions}
           onToggleWireframe={handleToggleWireframe}

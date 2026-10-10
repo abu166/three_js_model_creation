@@ -35,16 +35,16 @@ export const Layout: React.FC<LayoutProps> = ({
         {/* Floating Top Brand & Navigation Pill */}
         <header className="absolute top-4 left-4 right-4 md:right-auto z-20 flex items-center justify-between pointer-events-none">
 
-          {/* Quick interaction hints pill (Desktop) */}
-          <div className="hidden lg:flex items-center gap-4 px-4 py-2 rounded-2xl bg-slate-900/70 backdrop-blur-xl border border-white/10 text-xs text-slate-400 select-none shadow-lg">
+          {/* Quick interaction hints pill */}
+          <div className="hidden sm:flex items-center gap-3 px-3.5 py-1.5 rounded-full bg-slate-900/80 backdrop-blur-xl border border-white/10 text-xs text-slate-300 select-none shadow-lg">
             <span className="flex items-center gap-1.5">
               <Compass className="w-3.5 h-3.5 text-indigo-400" />
-              Айналдыру: тінтуірмен сүйреу
+              <span>Айналдыру: тінтуірмен сүйреу</span>
             </span>
             <span className="text-white/20">•</span>
             <span className="flex items-center gap-1.5">
               <MousePointer className="w-3.5 h-3.5 text-sky-400" />
-              Есікті басып ашу / жабу
+              <span>Есікті басып ашу / жабу</span>
             </span>
           </div>
         </header>

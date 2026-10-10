@@ -1,4 +1,5 @@
 export type CabinetColor = 'white' | 'gray' | 'walnut';
+export type AmbientTheme = 'day' | 'night' | 'studio';
 
 export interface CabinetDimensions {
   width: number;  // in mm
@@ -9,6 +10,7 @@ export interface CabinetDimensions {
 export interface CabinetConfig {
   dimensions: CabinetDimensions;
   color: CabinetColor;
+  ambientTheme: AmbientTheme;
   isDoorOpen: boolean;
   showDimensions: boolean;
   wireframe: boolean;
@@ -38,10 +40,10 @@ export const COLOR_OPTIONS: {
   {
     id: 'white',
     name: 'Ақ (White)',
-    subname: 'Satin Lacquer',
+    subname: 'Satin Finish',
     hex: '#F8F9FA',
-    roughness: 0.25,
-    metalness: 0.05,
+    roughness: 0.35,
+    metalness: 0.1,
   },
   {
     id: 'gray',
@@ -56,7 +58,8 @@ export const COLOR_OPTIONS: {
     name: 'Жаңғақ (Walnut)',
     subname: 'Natural Wood Grain',
     hex: '#4A3222',
-    roughness: 0.45,
-    metalness: 0.02,
+    roughness: 0.7,
+    metalness: 0.05,
   },
 ];
+
