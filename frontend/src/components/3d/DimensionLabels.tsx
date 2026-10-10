@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Html } from '@react-three/drei';
 import type { CabinetDimensions } from '../../types';
 
@@ -9,9 +9,19 @@ interface DimensionLabelsProps {
 
 /**
  * DimensionLabels Component
- * Renders sleek, compact architectural leader lines and subtle measurement badges (L, H, D).
+ * Renders sleek, compact architectural leader lines and slim measurement badges (L, H, D).
  */
 export const DimensionLabels: React.FC<DimensionLabelsProps> = ({ dimensions, visible }) => {
+  // Sync trigger to ensure Drei Html elements settle projection matrices on initial page load
+  const [syncKey, setSyncKey] = useState(0);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setSyncKey((prev) => prev + 1);
+    }, 50);
+    return () => clearTimeout(timer);
+  }, []);
+
   if (!visible) return null;
 
   // Convert mm to meters for Three.js coordinates
@@ -19,13 +29,13 @@ export const DimensionLabels: React.FC<DimensionLabelsProps> = ({ dimensions, vi
   const h = dimensions.height / 1000;
   const d = dimensions.depth / 1000;
 
-  // Offsets to float labels slightly away from the model with generous clearance
+  // Offsets to float labels slightly away from the model with clean clearance
   const widthOffsetZ = d / 2 + 0.08;
   const heightOffsetX = -w / 2 - 0.08;
   const depthOffsetX = w / 2 + 0.08;
 
   return (
-    <group name="dimension-labels">
+    <group name="dimension-labels" key={`dim-group-${syncKey}`}>
       {/* ================= LENGTH / WIDTH DIMENSION (X-axis, front bottom) ================= */}
       <group position={[0, 0.06, widthOffsetZ]}>
         {/* Leader line along bottom front */}
@@ -44,13 +54,13 @@ export const DimensionLabels: React.FC<DimensionLabelsProps> = ({ dimensions, vi
           <meshBasicMaterial color="#38bdf8" transparent opacity={0.8} />
         </mesh>
 
-        {/* Sleek compact HTML Badge Label */}
-        <Html center position={[0, 0.035, 0]} distanceFactor={5.2} style={{ pointerEvents: 'none' }}>
-          <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-slate-900/90 border border-sky-400/40 backdrop-blur-md text-[11px] font-mono text-sky-200 select-none whitespace-nowrap shadow-md">
-            <span className="w-1 h-1 rounded-full bg-sky-400"></span>
-            <span className="text-slate-400 text-[10px]">L:</span>
+        {/* Slim, compact HTML Badge Label */}
+        <Html center position={[0, 0.035, 0]} style={{ pointerEvents: 'none' }}>
+          <div className="flex items-center gap-1 px-1.5 py-0.5 rounded bg-slate-950/85 border border-sky-400/40 backdrop-blur-sm text-[10px] font-mono text-slate-200 select-none whitespace-nowrap shadow-sm">
+            <span className="w-1.5 h-1.5 rounded-full bg-sky-400 shrink-0"></span>
+            <span className="text-slate-400 font-normal">L:</span>
             <span className="font-normal text-white">{dimensions.width}</span>
-            <span className="text-[10px] text-slate-400">mm</span>
+            <span className="text-[9px] text-slate-400 font-normal">mm</span>
           </div>
         </Html>
       </group>
@@ -73,13 +83,13 @@ export const DimensionLabels: React.FC<DimensionLabelsProps> = ({ dimensions, vi
           <meshBasicMaterial color="#a855f7" transparent opacity={0.8} />
         </mesh>
 
-        {/* Sleek compact HTML Badge Label */}
-        <Html center position={[-0.05, 0, 0]} distanceFactor={5.2} style={{ pointerEvents: 'none' }}>
-          <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-slate-900/90 border border-purple-400/40 backdrop-blur-md text-[11px] font-mono text-purple-200 select-none whitespace-nowrap shadow-md">
-            <span className="w-1 h-1 rounded-full bg-purple-400"></span>
-            <span className="text-slate-400 text-[10px]">H:</span>
+        {/* Slim, compact HTML Badge Label */}
+        <Html center position={[-0.04, 0, 0]} style={{ pointerEvents: 'none' }}>
+          <div className="flex items-center gap-1 px-1.5 py-0.5 rounded bg-slate-950/85 border border-purple-400/40 backdrop-blur-sm text-[10px] font-mono text-slate-200 select-none whitespace-nowrap shadow-sm">
+            <span className="w-1.5 h-1.5 rounded-full bg-purple-400 shrink-0"></span>
+            <span className="text-slate-400 font-normal">H:</span>
             <span className="font-normal text-white">{dimensions.height}</span>
-            <span className="text-[10px] text-slate-400">mm</span>
+            <span className="text-[9px] text-slate-400 font-normal">mm</span>
           </div>
         </Html>
       </group>
@@ -102,13 +112,13 @@ export const DimensionLabels: React.FC<DimensionLabelsProps> = ({ dimensions, vi
           <meshBasicMaterial color="#34d399" transparent opacity={0.8} />
         </mesh>
 
-        {/* Sleek compact HTML Badge Label */}
-        <Html center position={[0.05, 0, 0]} distanceFactor={5.2} style={{ pointerEvents: 'none' }}>
-          <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-slate-900/90 border border-emerald-400/40 backdrop-blur-md text-[11px] font-mono text-emerald-200 select-none whitespace-nowrap shadow-md">
-            <span className="w-1 h-1 rounded-full bg-emerald-400"></span>
-            <span className="text-slate-400 text-[10px]">D:</span>
+        {/* Slim, compact HTML Badge Label */}
+        <Html center position={[0.04, 0, 0]} style={{ pointerEvents: 'none' }}>
+          <div className="flex items-center gap-1 px-1.5 py-0.5 rounded bg-slate-950/85 border border-emerald-400/40 backdrop-blur-sm text-[10px] font-mono text-slate-200 select-none whitespace-nowrap shadow-sm">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0"></span>
+            <span className="text-slate-400 font-normal">D:</span>
             <span className="font-normal text-white">{dimensions.depth}</span>
-            <span className="text-[10px] text-slate-400">mm</span>
+            <span className="text-[9px] text-slate-400 font-normal">mm</span>
           </div>
         </Html>
       </group>

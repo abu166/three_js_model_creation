@@ -147,6 +147,13 @@ export const Scene: React.FC<SceneProps> = ({
           <Environment preset="city" environmentIntensity={0.65} />
         </Suspense>
 
+        {/* Orbit Camera Controls with responsive focal target */}
+        <ControlsManager
+          targetY={targetY}
+          autoRotate={autoRotate}
+          resetTrigger={resetCameraTrigger}
+        />
+
         {/* ================= 3D CABINET MODEL & LABELS ================= */}
         <group name="interactive-scene">
           <Cabinet
@@ -189,13 +196,6 @@ export const Scene: React.FC<SceneProps> = ({
             metalness={0.1}
           />
         </mesh>
-
-        {/* Orbit Camera Controls with responsive focal target */}
-        <ControlsManager
-          targetY={targetY}
-          autoRotate={autoRotate}
-          resetTrigger={resetCameraTrigger}
-        />
       </Canvas>
     </div>
   );
