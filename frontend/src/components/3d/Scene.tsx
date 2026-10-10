@@ -91,8 +91,8 @@ export const Scene: React.FC<SceneProps> = ({
         shadows
         dpr={[1, 2]}
         camera={{
-          position: [1.6, 1.25, 1.75],
-          fov: 42,
+          position: [1.75, 1.35, 2.1],
+          fov: 38,
           near: 0.1,
           far: 20,
         }}
