@@ -26,8 +26,9 @@ const CabinetMaterial: React.FC<{ color: CabinetColor; wireframe?: boolean }> = 
 }) => {
   const [texture, setTexture] = useState<THREE.Texture | null>(cachedWalnutTexture);
 
+  // Pre-load walnut texture on initial mount
   useEffect(() => {
-    if (color === 'walnut' && !cachedWalnutTexture) {
+    if (!cachedWalnutTexture) {
       const loader = new THREE.TextureLoader();
       loader.load(
         '/textures/walnut.jpg',
@@ -46,27 +47,18 @@ const CabinetMaterial: React.FC<{ color: CabinetColor; wireframe?: boolean }> = 
         }
       );
     }
-  }, [color]);
-
-  if (color === 'walnut') {
-    return (
-      <meshStandardMaterial
-        color={texture ? undefined : '#4A3222'}
-        map={texture || undefined}
-        roughness={0.45}
-        metalness={0.05}
-        wireframe={wireframe}
-      />
-    );
-  }
+  }, []);
 
   const colorDef = COLOR_OPTIONS.find((c) => c.id === color) || COLOR_OPTIONS[0];
+  const isWalnut = color === 'walnut';
 
   return (
     <meshStandardMaterial
-      color={colorDef.hex}
-      roughness={colorDef.roughness}
-      metalness={colorDef.metalness}
+      key={`${color}-${isWalnut && Boolean(texture)}`}
+      color={isWalnut ? (texture ? '#ffffff' : '#5C4033') : colorDef.hex}
+      map={isWalnut && texture ? texture : null}
+      roughness={isWalnut ? 0.45 : colorDef.roughness}
+      metalness={isWalnut ? 0.05 : colorDef.metalness}
       wireframe={wireframe}
     />
   );
