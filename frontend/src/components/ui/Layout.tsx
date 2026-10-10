@@ -29,7 +29,7 @@ export const Layout: React.FC<LayoutProps> = ({
   return (
     <div className="relative w-screen h-screen overflow-hidden bg-slate-950 flex flex-col md:flex-row">
       {/* ================= 3D VIEWPORT CANVAS ================= */}
-      <main className="relative flex-1 w-full h-full min-h-0 min-w-0 overflow-hidden">
+      <main className="relative flex-1 w-full h-full min-h-0 min-w-0 overflow-hidden touch-none z-0">
         {children3D}
 
         {/* Floating Top Brand & Navigation Pill */}
@@ -50,7 +50,11 @@ export const Layout: React.FC<LayoutProps> = ({
         </header>
 
         {/* Floating Quick Action Overlay on Canvas */}
-        <div className="absolute bottom-20 md:bottom-6 left-4 z-20 flex items-center gap-2">
+        <div
+          className={`absolute bottom-20 md:bottom-6 left-4 z-20 items-center gap-2 ${
+            isMobileSheetOpen ? 'hidden md:flex' : 'flex'
+          }`}
+        >
           {onToggleDoor && (
             <button
               type="button"
@@ -81,11 +85,21 @@ export const Layout: React.FC<LayoutProps> = ({
       </aside>
 
       {/* ================= MOBILE BOTTOM SHEET ================= */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40">
-        {/* Mobile Bar Pill to expand / collapse */}
+      {/* Mobile Dim Backdrop when settings are open - tap to close */}
+      {isMobileSheetOpen && (
         <div
+          className="md:hidden fixed inset-0 bg-slate-950/60 backdrop-blur-[2px] z-40 transition-opacity duration-300"
+          onClick={() => setIsMobileSheetOpen(false)}
+          aria-label="Close settings"
+        />
+      )}
+
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 pointer-events-auto">
+        {/* Mobile Bar Pill to expand / collapse */}
+        <button
+          type="button"
           onClick={() => setIsMobileSheetOpen(!isMobileSheetOpen)}
-          className="cursor-pointer mx-3 mb-2 p-3 rounded-2xl bg-slate-900/95 backdrop-blur-2xl border border-white/15 shadow-2xl flex items-center justify-between"
+          className="w-[calc(100%-1.5rem)] mx-3 mb-2 p-3 rounded-2xl bg-slate-900/95 backdrop-blur-2xl border border-white/15 shadow-2xl flex items-center justify-between active:scale-[0.99] transition-transform"
         >
           <div className="flex items-center gap-2 text-xs font-semibold text-white">
             <SlidersHorizontal className="w-4 h-4 text-indigo-400" />
@@ -93,17 +107,17 @@ export const Layout: React.FC<LayoutProps> = ({
           </div>
           <div className="flex items-center gap-1 text-slate-400 text-xs">
             {isMobileSheetOpen ? (
-              <ChevronDown className="w-4 h-4" />
+              <ChevronDown className="w-4 h-4 text-slate-300" />
             ) : (
-              <ChevronUp className="w-4 h-4" />
+              <ChevronUp className="w-4 h-4 text-slate-300" />
             )}
           </div>
-        </div>
+        </button>
 
         {/* Mobile Drawer Body */}
         {isMobileSheetOpen && (
-          <div className="bg-slate-900/95 backdrop-blur-2xl border-t border-white/15 rounded-t-3xl max-h-[70vh] overflow-y-auto shadow-2xl transition-all duration-300">
-            <div className="w-12 h-1 bg-white/20 rounded-full mx-auto my-2" />
+          <div className="bg-slate-900 border-t border-white/15 rounded-t-3xl max-h-[62vh] overflow-y-auto overscroll-contain touch-pan-y shadow-2xl transition-all duration-300">
+            <div className="w-12 h-1.5 bg-white/20 rounded-full mx-auto my-2.5" />
             {childrenControls}
           </div>
         )}

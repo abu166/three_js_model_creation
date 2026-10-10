@@ -53,23 +53,23 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
   const volumeLiters = Math.round(Number(volumeM3) * 1000);
 
   return (
-    <div className="flex flex-col h-full overflow-y-auto text-slate-100 p-5 space-y-6">
+    <div className="flex flex-col h-full overflow-y-auto text-slate-100 p-4 sm:p-5 space-y-4 sm:space-y-6">
       {/* ================= HEADER ================= */}
-      <div className="flex items-center justify-between border-b border-white/10 pb-4">
+      <div className="flex items-center justify-between border-b border-white/10 pb-3 sm:pb-4">
         <div>
           <div className="flex items-center gap-2">
             <div className="p-1.5 rounded-lg bg-indigo-500/20 text-indigo-400 border border-indigo-500/30">
-              <Box className="w-5 h-5" />
+              <Box className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
-            <h1 className="text-lg font-bold tracking-tight text-white">
+            <h1 className="text-base sm:text-lg font-bold tracking-tight text-white">
               3D Тумба Конфигураторы
             </h1>
           </div>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-[11px] sm:text-xs text-slate-400 mt-0.5 sm:mt-1">
             Real-time interactive cabinet customizer
           </p>
         </div>
-        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] sm:text-[11px] font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
           R3F Live
         </span>
@@ -93,7 +93,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
                 key={preset.name}
                 type="button"
                 onClick={() => onApplyPreset(preset)}
-                className={`px-2.5 py-2 rounded-xl text-xs font-medium transition-all duration-200 border text-center ${
+                className={`px-2.5 py-2 rounded-xl text-xs font-medium transition-all duration-200 border text-center active:scale-95 ${
                   isActive
                     ? 'bg-indigo-600/30 border-indigo-500 text-white shadow-sm shadow-indigo-500/20'
                     : 'bg-slate-800/60 border-slate-700/60 text-slate-300 hover:bg-slate-800 hover:border-slate-600'
@@ -110,7 +110,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
       </div>
 
       {/* ================= 1. DIMENSION CONTROLS (3 FIELDS) ================= */}
-      <div className="space-y-4">
+      <div className="space-y-3.5 sm:space-y-4">
         <div className="flex items-center justify-between">
           <label className="text-xs font-semibold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
             <Sliders className="w-3.5 h-3.5 text-sky-400" />
@@ -122,7 +122,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
         </div>
 
         {/* WIDTH CONTROL */}
-        <div className="p-3.5 rounded-xl bg-slate-800/50 border border-slate-700/60 space-y-2">
+        <div className="p-3 sm:p-3.5 rounded-xl bg-slate-800/50 border border-slate-700/60 space-y-2">
           <div className="flex items-center justify-between">
             <span className="text-xs font-medium text-slate-200 flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-sky-400" />
@@ -132,6 +132,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
               <input
                 id="input-width"
                 type="number"
+                inputMode="numeric"
                 min={DIMENSION_LIMITS.width.min}
                 max={DIMENSION_LIMITS.width.max}
                 step={DIMENSION_LIMITS.width.step}
@@ -154,7 +155,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
             onChange={(e) =>
               onChangeDimension('width', Number(e.target.value))
             }
-            className="w-full h-1.5 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-sky-400 focus:outline-none"
+            className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-sky-400 focus:outline-none touch-pan-x"
           />
           <div className="flex justify-between text-[10px] text-slate-500 font-mono">
             <span>{DIMENSION_LIMITS.width.min} mm</span>
@@ -163,7 +164,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
         </div>
 
         {/* HEIGHT CONTROL */}
-        <div className="p-3.5 rounded-xl bg-slate-800/50 border border-slate-700/60 space-y-2">
+        <div className="p-3 sm:p-3.5 rounded-xl bg-slate-800/50 border border-slate-700/60 space-y-2">
           <div className="flex items-center justify-between">
             <span className="text-xs font-medium text-slate-200 flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-purple-400" />
@@ -173,6 +174,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
               <input
                 id="input-height"
                 type="number"
+                inputMode="numeric"
                 min={DIMENSION_LIMITS.height.min}
                 max={DIMENSION_LIMITS.height.max}
                 step={DIMENSION_LIMITS.height.step}
@@ -195,7 +197,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
             onChange={(e) =>
               onChangeDimension('height', Number(e.target.value))
             }
-            className="w-full h-1.5 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-purple-400 focus:outline-none"
+            className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-purple-400 focus:outline-none touch-pan-x"
           />
           <div className="flex justify-between text-[10px] text-slate-500 font-mono">
             <span>{DIMENSION_LIMITS.height.min} mm</span>
@@ -204,7 +206,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
         </div>
 
         {/* DEPTH CONTROL */}
-        <div className="p-3.5 rounded-xl bg-slate-800/50 border border-slate-700/60 space-y-2">
+        <div className="p-3 sm:p-3.5 rounded-xl bg-slate-800/50 border border-slate-700/60 space-y-2">
           <div className="flex items-center justify-between">
             <span className="text-xs font-medium text-slate-200 flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-emerald-400" />
@@ -214,6 +216,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
               <input
                 id="input-depth"
                 type="number"
+                inputMode="numeric"
                 min={DIMENSION_LIMITS.depth.min}
                 max={DIMENSION_LIMITS.depth.max}
                 step={DIMENSION_LIMITS.depth.step}
@@ -236,7 +239,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
             onChange={(e) =>
               onChangeDimension('depth', Number(e.target.value))
             }
-            className="w-full h-1.5 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-emerald-400 focus:outline-none"
+            className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-emerald-400 focus:outline-none touch-pan-x"
           />
           <div className="flex justify-between text-[10px] text-slate-500 font-mono">
             <span>{DIMENSION_LIMITS.depth.min} mm</span>

@@ -55,7 +55,7 @@ export const DimensionLabels: React.FC<DimensionLabelsProps> = ({ dimensions, vi
         </mesh>
 
         {/* Slim, compact HTML Badge Label */}
-        <Html center position={[0, 0.035, 0]} style={{ pointerEvents: 'none' }}>
+        <Html center position={[0, 0.035, 0]} zIndexRange={[5, 0]} style={{ pointerEvents: 'none' }}>
           <div className="flex items-center gap-1 px-1.5 py-0.5 rounded bg-slate-950/85 border border-sky-400/40 backdrop-blur-sm text-[10px] font-mono text-slate-200 select-none whitespace-nowrap shadow-sm">
             <span className="w-1.5 h-1.5 rounded-full bg-sky-400 shrink-0"></span>
             <span className="text-slate-400 font-normal">L:</span>
@@ -84,7 +84,7 @@ export const DimensionLabels: React.FC<DimensionLabelsProps> = ({ dimensions, vi
         </mesh>
 
         {/* Slim, compact HTML Badge Label */}
-        <Html center position={[-0.04, 0, 0]} style={{ pointerEvents: 'none' }}>
+        <Html center position={[-0.04, 0, 0]} zIndexRange={[5, 0]} style={{ pointerEvents: 'none' }}>
           <div className="flex items-center gap-1 px-1.5 py-0.5 rounded bg-slate-950/85 border border-purple-400/40 backdrop-blur-sm text-[10px] font-mono text-slate-200 select-none whitespace-nowrap shadow-sm">
             <span className="w-1.5 h-1.5 rounded-full bg-purple-400 shrink-0"></span>
             <span className="text-slate-400 font-normal">H:</span>
@@ -113,7 +113,7 @@ export const DimensionLabels: React.FC<DimensionLabelsProps> = ({ dimensions, vi
         </mesh>
 
         {/* Slim, compact HTML Badge Label */}
-        <Html center position={[0.04, 0, 0]} style={{ pointerEvents: 'none' }}>
+        <Html center position={[0.04, 0, 0]} zIndexRange={[5, 0]} style={{ pointerEvents: 'none' }}>
           <div className="flex items-center gap-1 px-1.5 py-0.5 rounded bg-slate-950/85 border border-emerald-400/40 backdrop-blur-sm text-[10px] font-mono text-slate-200 select-none whitespace-nowrap shadow-sm">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0"></span>
             <span className="text-slate-400 font-normal">D:</span>
