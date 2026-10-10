@@ -1,6 +1,7 @@
 import React, { Suspense, useRef, useEffect, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Environment, ContactShadows } from '@react-three/drei';
+import { EffectComposer, N8AO, SMAA } from '@react-three/postprocessing';
 import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
 import * as THREE from 'three';
 import { Cabinet } from './Cabinet';
@@ -72,7 +73,7 @@ const ControlsManager: React.FC<{
  */
 const IndoorPlant: React.FC = () => {
   return (
-    <group position={[-1.25, 0, -0.15]}>
+    <group position={[-1.25, -0.01, -0.15]}>
       {/* Ceramic Fluted Planter Pot */}
       <mesh position={[0, 0.18, 0]} castShadow receiveShadow>
         <cylinderGeometry args={[0.15, 0.11, 0.36, 32]} />
@@ -84,18 +85,18 @@ const IndoorPlant: React.FC = () => {
       </mesh>
 
       {/* Dark Potting Soil */}
-      <mesh position={[0, 0.35, 0]}>
+      <mesh position={[0, 0.35, 0]} receiveShadow>
         <cylinderGeometry args={[0.14, 0.14, 0.02, 24]} />
         <meshStandardMaterial color="#2b1d14" roughness={0.95} />
       </mesh>
 
       {/* Leaf 1 (Tall center-left) */}
       <group position={[-0.03, 0.36, 0.02]} rotation={[0.15, 0.3, -0.2]}>
-        <mesh position={[0, 0.28, 0]} castShadow>
+        <mesh position={[0, 0.28, 0]} castShadow receiveShadow>
           <cylinderGeometry args={[0.005, 0.008, 0.55, 8]} />
           <meshStandardMaterial color="#365314" roughness={0.6} />
         </mesh>
-        <mesh position={[-0.05, 0.55, 0.04]} rotation={[0.4, 0.2, -0.3]} castShadow>
+        <mesh position={[-0.05, 0.55, 0.04]} rotation={[0.4, 0.2, -0.3]} castShadow receiveShadow>
           <boxGeometry args={[0.18, 0.26, 0.002]} />
           <meshStandardMaterial color="#2d4a1d" roughness={0.5} />
         </mesh>
@@ -103,11 +104,11 @@ const IndoorPlant: React.FC = () => {
 
       {/* Leaf 2 (Upper right spread toward cabinet) */}
       <group position={[0.04, 0.36, -0.02]} rotation={[-0.1, -0.4, 0.25]}>
-        <mesh position={[0, 0.25, 0]} castShadow>
+        <mesh position={[0, 0.25, 0]} castShadow receiveShadow>
           <cylinderGeometry args={[0.005, 0.008, 0.5, 8]} />
           <meshStandardMaterial color="#365314" roughness={0.6} />
         </mesh>
-        <mesh position={[0.06, 0.48, -0.04]} rotation={[-0.3, -0.3, 0.3]} castShadow>
+        <mesh position={[0.06, 0.48, -0.04]} rotation={[-0.3, -0.3, 0.3]} castShadow receiveShadow>
           <boxGeometry args={[0.17, 0.24, 0.002]} />
           <meshStandardMaterial color="#365314" roughness={0.5} />
         </mesh>
@@ -115,11 +116,11 @@ const IndoorPlant: React.FC = () => {
 
       {/* Leaf 3 (Front drooping leaf) */}
       <group position={[0.02, 0.36, 0.06]} rotation={[0.4, 0.1, 0.1]}>
-        <mesh position={[0, 0.18, 0]} castShadow>
+        <mesh position={[0, 0.18, 0]} castShadow receiveShadow>
           <cylinderGeometry args={[0.004, 0.007, 0.36, 8]} />
           <meshStandardMaterial color="#3f6212" roughness={0.6} />
         </mesh>
-        <mesh position={[0.02, 0.34, 0.05]} rotation={[0.5, 0, 0.1]} castShadow>
+        <mesh position={[0.02, 0.34, 0.05]} rotation={[0.5, 0, 0.1]} castShadow receiveShadow>
           <boxGeometry args={[0.15, 0.22, 0.002]} />
           <meshStandardMaterial color="#2d4a1d" roughness={0.5} />
         </mesh>
@@ -127,11 +128,11 @@ const IndoorPlant: React.FC = () => {
 
       {/* Leaf 4 (Back wall angled leaf) */}
       <group position={[-0.03, 0.36, -0.05]} rotation={[-0.3, 0.4, -0.2]}>
-        <mesh position={[0, 0.22, 0]} castShadow>
+        <mesh position={[0, 0.22, 0]} castShadow receiveShadow>
           <cylinderGeometry args={[0.004, 0.007, 0.42, 8]} />
           <meshStandardMaterial color="#3f6212" roughness={0.6} />
         </mesh>
-        <mesh position={[-0.04, 0.42, -0.05]} rotation={[-0.4, 0.2, -0.2]} castShadow>
+        <mesh position={[-0.04, 0.42, -0.05]} rotation={[-0.4, 0.2, -0.2]} castShadow receiveShadow>
           <boxGeometry args={[0.16, 0.23, 0.002]} />
           <meshStandardMaterial color="#365314" roughness={0.5} />
         </mesh>
@@ -147,21 +148,21 @@ const CozyFloorLamp: React.FC<{ active: boolean }> = ({ active }) => {
   if (!active) return null;
 
   return (
-    <group position={[-1.35, 0, 0.1]}>
+    <group position={[-1.35, -0.01, 0.1]}>
       {/* Heavy brass circular base */}
-      <mesh position={[0, 0.015, 0]} castShadow>
+      <mesh position={[0, 0.015, 0]} castShadow receiveShadow>
         <cylinderGeometry args={[0.11, 0.11, 0.03, 24]} />
         <meshStandardMaterial color="#d4af37" metalness={0.9} roughness={0.2} />
       </mesh>
 
       {/* Slender vertical stand */}
-      <mesh position={[0, 0.72, 0]} castShadow>
+      <mesh position={[0, 0.72, 0]} castShadow receiveShadow>
         <cylinderGeometry args={[0.006, 0.006, 1.4, 16]} />
         <meshStandardMaterial color="#d4af37" metalness={0.9} roughness={0.2} />
       </mesh>
 
       {/* Modern dome lamp shade */}
-      <mesh position={[0, 1.38, 0]} castShadow>
+      <mesh position={[0, 1.38, 0]} castShadow receiveShadow>
         <cylinderGeometry args={[0.06, 0.14, 0.12, 24, 1, true]} />
         <meshStandardMaterial
           color="#1e293b"
@@ -251,7 +252,7 @@ const RoomInterior: React.FC<{ ambientTheme: AmbientTheme }> = ({ ambientTheme }
       {/* ================= 1. HARDWOOD FLOOR PLANE ================= */}
       <mesh
         rotation={[-Math.PI / 2, 0, 0]}
-        position={[0, 0, 0]}
+        position={[0, -0.0105, 0]}
         receiveShadow
       >
         <planeGeometry args={[16, 16]} />
@@ -339,18 +340,18 @@ const CinematicLighting: React.FC<{ ambientTheme: AmbientTheme }> = ({ ambientTh
       {/* ================= DAY THEME: Natural Window Sunlight ================= */}
       {ambientTheme === 'day' && (
         <>
-          {/* Soft ambient & sky fill */}
-          <ambientLight intensity={0.55} color="#ffffff" />
+          {/* Very low ambient light for realistic deep shadow contrast */}
+          <ambientLight intensity={0.25} color="#f8fafc" />
           <hemisphereLight
-            intensity={0.6}
-            color="#f8fafc"
-            groundColor="#e2e8f0"
+            intensity={0.2}
+            color="#f1f5f9"
+            groundColor="#94a3b8"
           />
 
-          {/* High-intensity streaming sunlight through invisible left window */}
+          {/* High-intensity streaming sunlight from left window angle */}
           <directionalLight
-            position={[-4.5, 5.2, 3.2]}
-            intensity={2.8}
+            position={[-4.5, 4.8, 3.2]}
+            intensity={3.0}
             color="#fffbf0"
             castShadow
             shadow-bias={-0.0001}
@@ -365,17 +366,17 @@ const CinematicLighting: React.FC<{ ambientTheme: AmbientTheme }> = ({ ambientTh
             shadow-camera-bottom={-1.5}
           />
 
-          {/* Gentle room ambient bounce from opposite quadrant */}
+          {/* Subtle room ambient bounce from opposite quadrant */}
           <directionalLight
             position={[3, 3, 2]}
-            intensity={0.45}
+            intensity={0.2}
             color="#f1f5f9"
           />
 
-          {/* Soft window skylight glow */}
+          {/* Soft window skylight fill */}
           <directionalLight
             position={[-5, 2, 0.5]}
-            intensity={0.55}
+            intensity={0.25}
             color="#e0f2fe"
           />
         </>
@@ -385,9 +386,9 @@ const CinematicLighting: React.FC<{ ambientTheme: AmbientTheme }> = ({ ambientTh
       {ambientTheme === 'night' && (
         <>
           {/* Dim evening room ambient */}
-          <ambientLight intensity={0.22} color="#1e1b4b" />
+          <ambientLight intensity={0.15} color="#1e1b4b" />
           <hemisphereLight
-            intensity={0.28}
+            intensity={0.18}
             color="#334155"
             groundColor="#0f172a"
           />
@@ -395,7 +396,7 @@ const CinematicLighting: React.FC<{ ambientTheme: AmbientTheme }> = ({ ambientTh
           {/* Warm overhead recessed spotlight casting rich, soft shadows */}
           <spotLight
             position={[0, 4.2, 0.8]}
-            intensity={2.5}
+            intensity={3.0}
             color="#fed7aa"
             angle={Math.PI / 3}
             penumbra={1}
@@ -409,21 +410,21 @@ const CinematicLighting: React.FC<{ ambientTheme: AmbientTheme }> = ({ ambientTh
           {/* Subtle soft rim fill to preserve cabinet edges */}
           <directionalLight
             position={[-2.5, 2, -1]}
-            intensity={0.3}
+            intensity={0.2}
             color="#94a3b8"
           />
 
           {/* Warm front fill light to illuminate front cabinet door and brass handle */}
           <directionalLight
             position={[1.2, 2.2, 2.8]}
-            intensity={0.75}
+            intensity={0.65}
             color="#fde68a"
           />
 
           {/* Warm under-cabinet floor bounce */}
           <pointLight
             position={[0, 0.08, 0]}
-            intensity={0.4}
+            intensity={0.35}
             color="#fb923c"
             distance={1.6}
             decay={2}
@@ -434,9 +435,9 @@ const CinematicLighting: React.FC<{ ambientTheme: AmbientTheme }> = ({ ambientTh
       {/* ================= STUDIO THEME: Clean Gallery 3-Point Lighting ================= */}
       {ambientTheme === 'studio' && (
         <>
-          <ambientLight intensity={0.5} color="#ffffff" />
+          <ambientLight intensity={0.25} color="#ffffff" />
           <hemisphereLight
-            intensity={0.55}
+            intensity={0.25}
             color="#ffffff"
             groundColor="#1e293b"
           />
@@ -444,12 +445,12 @@ const CinematicLighting: React.FC<{ ambientTheme: AmbientTheme }> = ({ ambientTh
           {/* Key Light */}
           <directionalLight
             position={[3.5, 5, 3]}
-            intensity={2.2}
+            intensity={2.8}
             color="#ffffff"
             castShadow
             shadow-mapSize-width={2048}
             shadow-mapSize-height={2048}
-            shadow-bias={-0.0005}
+            shadow-bias={-0.0003}
             shadow-normalBias={0.02}
             shadow-camera-near={0.5}
             shadow-camera-far={12}
@@ -462,14 +463,14 @@ const CinematicLighting: React.FC<{ ambientTheme: AmbientTheme }> = ({ ambientTh
           {/* Cool Rim / Fill light */}
           <directionalLight
             position={[-3.5, 3.5, -2.5]}
-            intensity={0.7}
+            intensity={0.5}
             color="#93c5fd"
           />
 
           {/* Soft Front Fill */}
           <directionalLight
             position={[0, 2, 3.5]}
-            intensity={0.35}
+            intensity={0.25}
             color="#ffffff"
           />
         </>
@@ -560,7 +561,7 @@ export const Scene: React.FC<SceneProps> = ({
         <RoomInterior ambientTheme={ambientTheme} />
 
         {/* ================= 3D CABINET MODEL & LABELS ================= */}
-        <group name="interactive-scene">
+        <group name="interactive-scene" position={[0, -0.01, 0]}>
           <Cabinet
             dimensions={dimensions}
             color={color}
@@ -578,14 +579,26 @@ export const Scene: React.FC<SceneProps> = ({
         {/* ================= CONTACT SHADOWS (GROUNDING) ================= */}
         <Suspense fallback={null}>
           <ContactShadows
-            position={[0, 0.001, 0]}
-            opacity={ambientTheme === 'night' ? 0.75 : 0.6}
+            position={[0, -0.01, 0]}
+            opacity={0.8}
             scale={10}
             blur={2.5}
-            far={2}
-            color={ambientTheme === 'night' ? '#030712' : '#0f172a'}
+            far={4}
+            color="#1a1a1a"
           />
         </Suspense>
+
+        {/* ================= POST-PROCESSING: N8AO (AMBIENT OCCLUSION) & SMAA ================= */}
+        <EffectComposer multisampling={0}>
+          <N8AO
+            aoRadius={0.35}
+            intensity={1.8}
+            distanceFalloff={0.8}
+            quality="medium"
+            color="#000000"
+          />
+          <SMAA />
+        </EffectComposer>
       </Canvas>
     </div>
   );

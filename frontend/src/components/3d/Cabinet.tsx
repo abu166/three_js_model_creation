@@ -60,7 +60,10 @@ const CabinetMaterial: React.FC<{ color: CabinetColor; wireframe?: boolean }> = 
       key={`${color}-${isWalnut && Boolean(texture)}`}
       color={isWalnut ? (texture ? '#ffffff' : '#5C4033') : colorDef.hex}
       map={isWalnut && texture ? texture : null}
-      roughness={isWalnut ? 0.7 : colorDef.roughness}
+      bumpMap={isWalnut && texture ? texture : null}
+      bumpScale={isWalnut ? 0.003 : 0}
+      roughnessMap={isWalnut && texture ? texture : null}
+      roughness={isWalnut ? 0.85 : colorDef.roughness}
       metalness={isWalnut ? 0.05 : colorDef.metalness}
       wireframe={wireframe}
     />
@@ -136,14 +139,14 @@ export const Cabinet: React.FC<CabinetProps> = ({
           <mesh position={[0, legH / 2, 0]} castShadow receiveShadow>
             <cylinderGeometry args={[0.012, 0.008, legH, 16]} />
             <meshStandardMaterial
-              color="#1e293b"
-              metalness={0.8}
-              roughness={0.3}
+              color="#0f172a"
+              metalness={0.9}
+              roughness={0.2}
               wireframe={wireframe}
             />
           </mesh>
           {/* Brass foot accent ring */}
-          <mesh position={[0, 0.01, 0]} castShadow>
+          <mesh position={[0, 0.01, 0]} castShadow receiveShadow>
             <cylinderGeometry args={[0.009, 0.008, 0.02, 16]} />
             <meshStandardMaterial
               color="#d4af37"
@@ -268,12 +271,13 @@ export const Cabinet: React.FC<CabinetProps> = ({
               position={[0, 0.05, -0.01]}
               rotation={[Math.PI / 2, 0, 0]}
               castShadow
+              receiveShadow
             >
               <cylinderGeometry args={[0.004, 0.004, 0.02, 16]} />
               <meshStandardMaterial
                 color="#c59b27"
                 metalness={0.9}
-                roughness={0.25}
+                roughness={0.2}
                 wireframe={wireframe}
               />
             </mesh>
@@ -283,12 +287,13 @@ export const Cabinet: React.FC<CabinetProps> = ({
               position={[0, -0.05, -0.01]}
               rotation={[Math.PI / 2, 0, 0]}
               castShadow
+              receiveShadow
             >
               <cylinderGeometry args={[0.004, 0.004, 0.02, 16]} />
               <meshStandardMaterial
                 color="#c59b27"
                 metalness={0.9}
-                roughness={0.25}
+                roughness={0.2}
                 wireframe={wireframe}
               />
             </mesh>
