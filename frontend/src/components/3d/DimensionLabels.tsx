@@ -26,14 +26,14 @@ export const DimensionLabels: React.FC<DimensionLabelsProps> = ({ dimensions, vi
   const d = dimensions.depth / 1000;
 
   // Offsets to float labels slightly away from the model
-  const widthOffsetZ = d / 2 + 0.08;
+  const widthOffsetZ = d / 2 + 0.12;
   const heightOffsetX = -w / 2 - 0.08;
   const depthOffsetX = w / 2 + 0.08;
 
   return (
     <group name="dimension-labels">
-      {/* ================= WIDTH DIMENSION (X-axis, front bottom) ================= */}
-      <group position={[0, 0.02, widthOffsetZ]}>
+      {/* ================= LENGTH / WIDTH DIMENSION (X-axis, front bottom) ================= */}
+      <group position={[0, 0.04, widthOffsetZ]}>
         {/* Leader line along bottom front */}
         <mesh position={[0, 0, 0]}>
           <boxGeometry args={[w, 0.002, 0.002]} />
@@ -50,11 +50,11 @@ export const DimensionLabels: React.FC<DimensionLabelsProps> = ({ dimensions, vi
           <meshBasicMaterial color="#38bdf8" transparent opacity={0.8} />
         </mesh>
 
-        {/* HTML Badge Label */}
-        <Html center position={[0, -0.05, 0]} distanceFactor={3.2} zIndexRange={[100, 0]} style={{ pointerEvents: 'none' }}>
-          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-900/90 border border-sky-400/50 shadow-lg shadow-sky-500/20 backdrop-blur-md text-xs font-mono text-sky-200 select-none whitespace-nowrap">
+        {/* HTML Badge Label - elevated above ground line so it is never occluded */}
+        <Html center position={[0, 0.05, 0.02]} distanceFactor={3.2} zIndexRange={[100, 0]} style={{ pointerEvents: 'none' }}>
+          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-900/95 border border-sky-400/60 shadow-lg shadow-sky-500/25 backdrop-blur-md text-xs font-mono text-sky-200 select-none whitespace-nowrap">
             <span className="w-1.5 h-1.5 rounded-full bg-sky-400 animate-pulse"></span>
-            <span className="text-slate-400 font-sans font-medium text-[10px]">W:</span>
+            <span className="text-slate-400 font-sans font-medium text-[10px]">L (Length):</span>
             <span className="font-semibold text-white">{dimensions.width}</span>
             <span className="text-[10px] text-sky-400">mm</span>
           </div>
