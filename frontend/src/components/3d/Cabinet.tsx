@@ -1,12 +1,11 @@
-import React, { useRef, Suspense, useMemo } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import * as THREE from 'three';
 import { useFrame } from '@react-three/fiber';
-import { useTexture } from '@react-three/drei';
 import type { CabinetColor, CabinetDimensions } from '../../types';
 import { COLOR_OPTIONS } from '../../types';
 
-// Preload walnut texture for seamless switching
-useTexture.preload('/textures/walnut.jpg');
+// Global texture cache across re-renders
+let cachedWalnutTexture: THREE.Texture | null = null;
 
 interface CabinetProps {
   dimensions: CabinetDimensions;
@@ -17,53 +16,47 @@ interface CabinetProps {
 }
 
 /**
- * Procedural/Loaded Walnut Wood Material with Repeat Wrapping
- */
-const WalnutMaterial: React.FC<{ wireframe?: boolean }> = ({ wireframe }) => {
-  const texture = useTexture('/textures/walnut.jpg');
-
-  useMemo(() => {
-    if (texture) {
-      texture.wrapS = THREE.RepeatWrapping;
-      texture.wrapT = THREE.RepeatWrapping;
-      texture.repeat.set(1.8, 1.8);
-      texture.colorSpace = THREE.SRGBColorSpace;
-      texture.needsUpdate = true;
-    }
-  }, [texture]);
-
-  return (
-    <meshStandardMaterial
-      map={texture}
-      roughness={0.45}
-      metalness={0.05}
-      wireframe={wireframe}
-    />
-  );
-};
-
-/**
  * Universal Cabinet Material Selector
- * Gracefully provides white/gray satin finish or walnut texture with fallback
+ * Non-blocking, cross-browser resilient material loader (Chrome, Safari, Firefox, Mobile)
+ * Displays rich walnut fallback immediately and seamlessly applies texture once loaded.
  */
 const CabinetMaterial: React.FC<{ color: CabinetColor; wireframe?: boolean }> = ({
   color,
   wireframe = false,
 }) => {
+  const [texture, setTexture] = useState<THREE.Texture | null>(cachedWalnutTexture);
+
+  useEffect(() => {
+    if (color === 'walnut' && !cachedWalnutTexture) {
+      const loader = new THREE.TextureLoader();
+      loader.load(
+        '/textures/walnut.jpg',
+        (loadedTex) => {
+          loadedTex.wrapS = THREE.RepeatWrapping;
+          loadedTex.wrapT = THREE.RepeatWrapping;
+          loadedTex.repeat.set(1.8, 1.8);
+          loadedTex.colorSpace = THREE.SRGBColorSpace;
+          loadedTex.needsUpdate = true;
+          cachedWalnutTexture = loadedTex;
+          setTexture(loadedTex);
+        },
+        undefined,
+        (err) => {
+          console.warn('Walnut texture load error, using fallback:', err);
+        }
+      );
+    }
+  }, [color]);
+
   if (color === 'walnut') {
     return (
-      <Suspense
-        fallback={
-          <meshStandardMaterial
-            color="#4A3222"
-            roughness={0.5}
-            metalness={0.05}
-            wireframe={wireframe}
-          />
-        }
-      >
-        <WalnutMaterial wireframe={wireframe} />
-      </Suspense>
+      <meshStandardMaterial
+        color={texture ? undefined : '#4A3222'}
+        map={texture || undefined}
+        roughness={0.45}
+        metalness={0.05}
+        wireframe={wireframe}
+      />
     );
   }
 

@@ -29,7 +29,7 @@ export const Layout: React.FC<LayoutProps> = ({
   return (
     <div className="relative w-screen h-screen overflow-hidden bg-slate-950 flex flex-col md:flex-row">
       {/* ================= 3D VIEWPORT CANVAS ================= */}
-      <main className="relative flex-1 w-full h-full">
+      <main className="relative flex-1 w-full h-full min-h-0 min-w-0 overflow-hidden">
         {children3D}
 
         {/* Floating Top Brand & Navigation Pill */}

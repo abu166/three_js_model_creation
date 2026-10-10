@@ -86,9 +86,10 @@ export const Scene: React.FC<SceneProps> = ({
   const targetY = (dimensions.height / 1000) / 2;
 
   return (
-    <div className="w-full h-full relative select-none">
+    <div className="absolute inset-0 w-full h-full select-none overflow-hidden">
       <Canvas
         shadows
+        dpr={[1, 2]}
         camera={{
           position: [1.6, 1.25, 1.75],
           fov: 42,
@@ -97,23 +98,27 @@ export const Scene: React.FC<SceneProps> = ({
         }}
         gl={{
           antialias: true,
+          alpha: true,
+          powerPreference: 'default',
           toneMapping: THREE.ACESFilmicToneMapping,
           toneMappingExposure: 1.15,
         }}
-        className="w-full h-full"
+        style={{ width: '100%', height: '100%', display: 'block' }}
       >
         {/* ================= LIGHTING SETUP ================= */}
-        {/* Soft omnidirectional ambient fill light */}
+        {/* Ambient & Hemisphere fill lights - guarantees visibility even if external HDR is blocked */}
         <ambientLight intensity={0.5} />
+        <hemisphereLight intensity={0.55} groundColor="#1e293b" color="#ffffff" />
 
-        {/* Primary Key Light casting sharp & realistic shadows */}
+        {/* Primary Key Light with Apple Metal / Safari compatible shadow params */}
         <directionalLight
           position={[3.5, 5, 3]}
           intensity={1.9}
           castShadow
-          shadow-mapSize-width={2048}
-          shadow-mapSize-height={2048}
-          shadow-bias={-0.0001}
+          shadow-mapSize-width={1024}
+          shadow-mapSize-height={1024}
+          shadow-bias={-0.0005}
+          shadow-normalBias={0.02}
           shadow-camera-near={0.5}
           shadow-camera-far={12}
           shadow-camera-left={-2}
@@ -137,37 +142,39 @@ export const Scene: React.FC<SceneProps> = ({
         />
 
         {/* ================= ENVIRONMENT & REFLECTIONS ================= */}
-        {/* City preset provides rich reflections for metals & polished finishes */}
-        <Environment preset="city" environmentIntensity={0.65} />
-
-        {/* ================= 3D CABINET MODEL & LABELS ================= */}
+        {/* Isolated in Suspense so if external HDR CDN is blocked by Safari ITP, canvas does not freeze */}
         <Suspense fallback={null}>
-          <group name="interactive-scene">
-            <Cabinet
-              dimensions={dimensions}
-              color={color}
-              isDoorOpen={isDoorOpen}
-              wireframe={wireframe}
-              onToggleDoor={onToggleDoor}
-            />
-
-            <DimensionLabels
-              dimensions={dimensions}
-              visible={showDimensions}
-            />
-          </group>
+          <Environment preset="city" environmentIntensity={0.65} />
         </Suspense>
 
+        {/* ================= 3D CABINET MODEL & LABELS ================= */}
+        <group name="interactive-scene">
+          <Cabinet
+            dimensions={dimensions}
+            color={color}
+            isDoorOpen={isDoorOpen}
+            wireframe={wireframe}
+            onToggleDoor={onToggleDoor}
+          />
+
+          <DimensionLabels
+            dimensions={dimensions}
+            visible={showDimensions}
+          />
+        </group>
+
         {/* ================= CONTACT SHADOWS FLOOR ================= */}
-        <ContactShadows
-          position={[0, 0, 0]}
-          opacity={0.7}
-          scale={5}
-          blur={1.8}
-          far={1.6}
-          resolution={1024}
-          color="#030712"
-        />
+        <Suspense fallback={null}>
+          <ContactShadows
+            position={[0, 0, 0]}
+            opacity={0.7}
+            scale={5}
+            blur={1.8}
+            far={1.6}
+            resolution={1024}
+            color="#030712"
+          />
+        </Suspense>
 
         {/* Subtle studio circular floor pedestal */}
         <mesh
