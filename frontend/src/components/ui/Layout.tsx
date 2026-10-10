@@ -34,16 +34,6 @@ export const Layout: React.FC<LayoutProps> = ({
 
         {/* Floating Top Brand & Navigation Pill */}
         <header className="absolute top-4 left-4 right-4 md:right-auto z-20 flex items-center justify-between pointer-events-none">
-          <div className="pointer-events-auto px-4 py-2 rounded-2xl bg-slate-900/80 backdrop-blur-xl border border-white/10 shadow-xl">
-            <div>
-              <div className="text-xs font-bold text-white tracking-wide">
-                CABINET 3D
-              </div>
-              <div className="text-[10px] text-slate-400">
-                Studio Configurator
-              </div>
-            </div>
-          </div>
 
           {/* Quick interaction hints pill (Desktop) */}
           <div className="hidden lg:flex items-center gap-4 px-4 py-2 rounded-2xl bg-slate-900/70 backdrop-blur-xl border border-white/10 text-xs text-slate-400 select-none shadow-lg">
